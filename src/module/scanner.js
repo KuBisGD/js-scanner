@@ -17,6 +17,11 @@ class Scanner {
    */
   #lineReader
 
+  /**
+   * @type {Node.WritableStream}
+   */
+  #output
+
 
   /**
    * @type {string[]}
@@ -29,8 +34,9 @@ class Scanner {
    * @param {Node.ReadableStream} input Input stream.
    * @param {Node.WritableStream} output Output stream.
    */
-  constructor (input) {
+  constructor (input, output = process.stdout) {
     this.#lineReader = new LineReader(input)
+    this.#output = output
   }
 
   /**
@@ -66,13 +72,38 @@ class Scanner {
   }
 
   /**
+   * Return the next token from the buffer.
+   * 
+   * @returns {Promise<string | undefined>} The next token from the buffer.
+   */
+  async next () {
+    if (this.#buffer.length === 0) {
+      const ok = await this.#fillBuffer()
+      if (!ok) {
+        throw Error('No more input')
+      }
+    }
+
+    return this.#buffer.shift()
+  }
+
+  /**
+   *  Checks if the buffer has more tokens.
+   * 
+   * @returns {boolean} Whether the buffer has more items
+   */
+  hasNext () {
+    return this.#buffer.length > 0
+  }
+
+  /**
    * Prompt a message before an input-
    * 
    * @param {string} message A message to prompt the output.
    * @returns {Scanner} Reference to this Scanner.
    */
   prompt (message) {
-    console.log(message) // temp? use NodeJS.WritableStream
+    this.#output.write(message)
     return this
   }
 
@@ -105,6 +136,11 @@ class Scanner {
     return rawTokens.filter(token => token.length > 0)
   }
 
+  /**
+   * Fills the buffer with tokens
+   * 
+   * @returns {Promise<boolean>} True on success.
+   */
   async #fillBuffer () {
     const line = await this.#lineReader.readLine()
 
