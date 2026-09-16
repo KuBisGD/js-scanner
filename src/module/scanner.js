@@ -215,7 +215,7 @@ class LineReader {
   /**
    * Reads the input ReadableStream.
    * 
-   * @returns {Promise<string | void>} Line.
+   * @returns {Promise<string | null>} Line.
    */
   async readLine () {
     if (this.#queue.length > 0) {
