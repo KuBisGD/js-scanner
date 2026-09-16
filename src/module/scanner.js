@@ -77,6 +77,17 @@ class Scanner {
   }
 
   /**
+   * Clears any tokens and leftover inputs.
+   * 
+   * @returns {Scanner} Reference to this Scanner.
+   */
+  clearInput () {
+    this.#buffer = []
+    this.#lineReader.clearQueue()
+    return this
+  }
+
+  /**
    * Creates tokens from a line.
    * 
    * @param {string} line Line to be turned into tokens.
@@ -159,6 +170,13 @@ class LineReader {
     return new Promise(resolve => {
       this.#resolveNext = resolve
     })
+  }
+
+  /**
+   * Clears the internal input queue.
+   */
+  clearQueue () {
+    this.#queue = []
   }
 }
 
