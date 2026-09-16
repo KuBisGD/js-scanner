@@ -93,11 +93,11 @@ class Scanner {
    * @returns {boolean} Whether the buffer has more items
    */
   hasNext () {
-    return this.#buffer.length > 0
+    return this.#buffer.length > 0 || this.#lineReader.length > 0
   }
 
   /**
-   * Prompt a message before an input-
+   * Prompt a message before an input.
    * 
    * @param {string} message A message to prompt the output.
    * @returns {Scanner} Reference to this Scanner.
@@ -166,6 +166,16 @@ class LineReader {
   #resolveNext = null
 
   #queue = []
+
+  /**
+   * Gets the length of the LineReaders internal queue.
+   * 
+   * @returns {number} The length.
+   */
+  get length () {
+    return this.#queue.length
+  }
+
   /**
    * Create a new line reader.
    * 
