@@ -37,7 +37,6 @@ class Scanner {
 
   /**
    * Reads the next line.
-   * 
    */
   async nextLine () {
     throw new Error('Not implemented')
@@ -55,6 +54,17 @@ class Scanner {
    */
   async nextChar () {
     throw new Error('Not implemented')
+  }
+
+  /**
+   * Prompt a message before an input-
+   * 
+   * @param {string} message A message to prompt the output.
+   * @returns {Scanner} Reference to this Scanner.
+   */
+  prompt (message) {
+    console.log(message) // temp? use NodeJS.WritableStream
+    return this
   }
 
   async #fillBuffer () {
