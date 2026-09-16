@@ -1,0 +1,25 @@
+{
+  "name": "js-scanner",
+  "version": "1.0.0",
+  "description": "",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "lint": "npx eslint ./src || exit 0",
+    "lint:fix": "npx eslint ./src --fix || exit 0",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@lnu/eslint-config": "^2.0.13",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "eslint": "^10.10.0",
+    "eslint-plugin-jsdoc": "^63.3.3",
+    "eslint-plugin-n": "^18.3.0",
+    "eslint-plugin-regexp": "^3.3.0",
+    "eslint-plugin-security": "^4.0.1",
+    "globals": "^17.12.0"
+  }
+}
