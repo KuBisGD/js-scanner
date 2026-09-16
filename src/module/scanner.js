@@ -55,7 +55,7 @@ class Scanner {
 
     if (line === null) {
       this.eof = true
-      return new Error('No more input')
+      throw new Error('No more input')
     }
 
     return line
@@ -64,10 +64,17 @@ class Scanner {
   /**
    * Reads the next number.
    * 
-   * @param {import('./types/number-range.js').NumberRange|undefined} [range=undefined] Filter input for range. 
+   * @param {import('./types/number-range.js').NumberRange} [range=undefined] Filter input for range. 
    */
-  async nextNumber (range = undefined) {
-    console.log(range)
+  async nextNumber (range = {}) {
+    const { min, max } = range
+
+    if (typeof min === 'number' && typeof max === 'number') {
+      if (min >= max) {
+        throw new Error(`min:${min} cannot be more than or equal to max:${max}`)
+      }
+    }
+
     throw new Error('Not implemented')
   }
 
