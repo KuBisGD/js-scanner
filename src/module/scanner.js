@@ -161,10 +161,19 @@ class Scanner {
  * Class for reading a readable stream.
  */
 class LineReader {
+  /**
+   * @type {readline.Interface}
+   */
   #readLine
 
+  /**
+   * @type {null|(value: string | void) => void}
+   */
   #resolveNext = null
 
+  /**
+   * @type {string[]}
+   */
   #queue = []
 
   /**
