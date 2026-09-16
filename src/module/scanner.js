@@ -20,6 +20,11 @@ class Scanner {
   #output
 
   /**
+   * @type {Array}
+   */
+  #buffer
+
+  /**
    * Creates a new scanner.
    * 
    * @param {NodeJS.ReadableStream} input Input stream.
@@ -50,6 +55,37 @@ class Scanner {
    */
   async nextChar () {
     throw new Error('Not implemented')
+  }
+
+  async #fillBuffer () {
+    // check eof
+
+    let line = ''
+
+    try {
+      // line = await some input method
+
+    } catch {
+      // eof
+      return false
+    }
+
+    if (line === null | line === undefined) {
+      // eof
+      return false
+    }
+
+    const trimmed = line.trim()
+
+    const tokens = [] //create tokens()
+
+    if (tokens.length === 0) {
+      return await this.#fillBuffer()
+    }
+
+    this.#buffer.push(...tokens)
+
+    return true
   }
 }
 
