@@ -158,7 +158,7 @@ class Scanner {
 }
 
 /**
- * Object for reading a readable stream.
+ * Class for reading a readable stream.
  */
 class LineReader {
   #readLine
