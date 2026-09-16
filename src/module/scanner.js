@@ -11,39 +11,44 @@ import readline from 'node:readline'
  * An input scanner.
  */
 class Scanner {
-  /**
-   * @type {Node.ReadableStream}
-   */
-  #input
 
+  /**
+   * @type {LineReader}
+   */
   #lineReader
 
-  /**
-   * @type {Node.WritableStream}
-   */
-  #output
 
   /**
-   * @type {Array}
+   * @type {string[]}
    */
   #buffer
 
   /**
    * Creates a new scanner.
    * 
-   * @param {NodeJS.ReadableStream} input Input stream.
-   * @param {NodeJS.WritableStream} output Output stream.
+   * @param {Node.ReadableStream} input Input stream.
+   * @param {Node.WritableStream} output Output stream.
    */
-  constructor (input, output) {
+  constructor (input) {
     this.#lineReader = new LineReader(input)
-    this.#output = output
   }
 
   /**
    * Reads the next line.
+   * 
+   * @returns {string} The next line.
    */
   async nextLine () {
-    throw new Error('Not implemented')
+    this.#buffer = []
+
+    const line = await this.#lineReader.readLine()
+
+    if (line === null) {
+      this.eof = true
+      return new Error('No more input')
+    }
+
+    return line
   }
 
   /**
@@ -72,9 +77,10 @@ class Scanner {
   }
 
   /**
+   * Creates tokens from a line.
    * 
-   * @param {string} line 
-   * @returns 
+   * @param {string} line Line to be turned into tokens.
+   * @returns {string[]} Tokens from line.
    */
   #tokenize (line) {
     const trimmed = line.trim()
@@ -104,6 +110,9 @@ class Scanner {
   }
 }
 
+/**
+ * Object for reading a readable stream.
+ */
 class LineReader {
   #readLine
 
@@ -113,7 +122,7 @@ class LineReader {
   /**
    * Create a new line reader.
    * 
-   * @param {NodeJS.ReadStream} input Input method.
+   * @param {Node.ReadableStream} input Input method.
    */
   constructor (input = process.stdin) {
     this.#readLine = readline.createInterface({ input })
@@ -125,6 +134,8 @@ class LineReader {
       } else {
         this.#queue.push(line)
       }
+
+      console.log(this.#queue)
     })
 
     this.#readLine.on('close', () => {
@@ -134,6 +145,12 @@ class LineReader {
     })
   }
 
+
+  /**
+   * Reads the input ReadableStream.
+   * 
+   * @returns {Promise<string | void>} Line.
+   */
   async readLine () {
     if (this.#queue.length > 0) {
       return this.#queue.shift()
