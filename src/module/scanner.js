@@ -31,10 +31,14 @@ class Scanner {
   /**
    * Creates a new scanner.
    * 
-   * @param {Node.ReadableStream} input Input stream.
-   * @param {Node.WritableStream} output Output stream.
+   * @param {IOSettings} io Scanner settings
    */
-  constructor (input, output = process.stdout) {
+  constructor (io = {}) {
+    const {
+      input = process.stdin,
+      output = process.stdout,
+    } = io
+
     this.#lineReader = new LineReader(input)
     this.#output = output
   }
@@ -156,6 +160,13 @@ class Scanner {
     return tokens.length > 0
   }
 }
+
+/**
+ * @typedef IOSettings
+ * @type {object}
+ * @property {Node.ReadableStream} [input=process.stdin] Input stream.
+ * @property {Node.WritableStream} [output=process.stdout] Output stream.
+ */
 
 /**
  * Class for reading a readable stream.
