@@ -4,7 +4,7 @@ import Scanner from './src/module/scanner.js'
  * main
  */
 const main = async () => {
-  const scanner = new Scanner(process.stdin, process.stdout)
+  const scanner = new Scanner()
 
   console.log('testing\n')
   let line = await scanner.prompt('Enter a name: ').nextLine()
