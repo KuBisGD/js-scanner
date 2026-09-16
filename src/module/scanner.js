@@ -31,7 +31,7 @@ class Scanner {
   /**
    * Creates a new scanner.
    * 
-   * @param {IOSettings} io Scanner settings
+   * @param {import('./types/io-settings.js').IOSettings} io Scanner settings
    */
   constructor (io = {}) {
     const {
@@ -63,8 +63,11 @@ class Scanner {
 
   /**
    * Reads the next number.
+   * 
+   * @param {import('./types/number-range.js').NumberRange|undefined} [range=undefined] Filter input for range. 
    */
-  async nextNumber () {
+  async nextNumber (range = undefined) {
+    console.log(range)
     throw new Error('Not implemented')
   }
 
@@ -160,13 +163,6 @@ class Scanner {
     return tokens.length > 0
   }
 }
-
-/**
- * @typedef IOSettings
- * @type {object}
- * @property {Node.ReadableStream} [input=process.stdin] Input stream.
- * @property {Node.WritableStream} [output=process.stdout] Output stream.
- */
 
 /**
  * Class for reading a readable stream.
