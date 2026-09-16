@@ -7,13 +7,14 @@ const main = async () => {
   const scanner = new Scanner(process.stdin, process.stdout)
 
   console.log('testing\n')
-  let line = await scanner.nextLine()
+  let line = await scanner.prompt('Enter a name: ').nextLine()
 
   console.log(line)
 
   setTimeout(async () => {
     console.log('testing - 2\n')
-    line = await scanner.nextLine()
+
+    line = await scanner.clearInput().nextLine()
 
     console.log(line)
   }, 3000)
