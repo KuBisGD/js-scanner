@@ -9,6 +9,8 @@ import readline from 'node:readline'
 
 /**
  * An input scanner.
+ * 
+ * @todo Document where errors are thrown.
  */
 class Scanner {
 
@@ -79,9 +81,12 @@ class Scanner {
   }
 
   /**
-   * Gets the next character.
+   * Gets the next String.
+   * 
+   * @param {RegExp|undefined} [pattern=undefined] Pattern for matching the next string.
+   * @returns {Promise<string>} The next string.
    */
-  async nextChar () {
+  async nextString (pattern = undefined) {
     throw new Error('Not implemented')
   }
 
