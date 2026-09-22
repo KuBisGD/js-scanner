@@ -73,6 +73,14 @@ class Scanner {
 
     const input = await this.next()
 
+    const asNumber = Number.parseFloat(input)
+
+    if (Number.isNaN(asNumber)) {
+      throw new Error(`'${input}' could not be converted to number`)
+    }
+
+    
+
     if (typeof min === 'number' && typeof max === 'number') {
       if (min >= max) {
         throw new Error(`min:${min} cannot be more than or equal to max:${max}`)
