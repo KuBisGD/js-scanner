@@ -10,7 +10,7 @@ import readline from 'node:readline'
 /**
  * An input scanner.
  * 
- * @todo Document where errors are thrown.
+ * @todo Document where errors are thrown. (look at eof)
  */
 class Scanner {
 
@@ -33,7 +33,7 @@ class Scanner {
   /**
    * Creates a new scanner.
    * 
-   * @param {import('./types/io-settings.js').IOSettings} io Scanner settings
+   * @param {import('./types/io-settings.js').IOSettings} [io=object] Scanner settings
    */
   constructor (io = {}) {
     const {
@@ -118,7 +118,7 @@ class Scanner {
   }
 
   /**
-   * Prompt a message before an input.
+   * Prompt a message to the output.
    * 
    * @param {string} message A message to prompt the output.
    * @returns {Scanner} Reference to this Scanner.
@@ -221,7 +221,7 @@ class LineReader {
 
 
   /**
-   * Reads the input ReadableStream.
+   * Reads the next input from the input queue.
    * 
    * @returns {Promise<string | null>} Line.
    */
