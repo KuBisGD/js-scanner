@@ -66,10 +66,12 @@ class Scanner {
   /**
    * Reads the next number.
    * 
-   * @param {import('./types/number-range.js').NumberRange} [range=undefined] Filter input for range. 
+   * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range. 
    */
   async nextNumber (range = {}) {
     const { min, max } = range
+
+    const input = await this.next()
 
     if (typeof min === 'number' && typeof max === 'number') {
       if (min >= max) {
@@ -212,22 +214,9 @@ class LineReader {
   constructor (input = process.stdin) {
     this.#readLine = readline.createInterface({ input })
 
-    this.#readLine.on('line', line => {
-      if (this.#resolveNext) {
-        this.#resolveNext(line)
-        this.#resolveNext = null
-      } else {
-        this.#queue.push(line)
-      }
+    this.#readLine.on('line', line => this.#onLine(line))
 
-      console.log(this.#queue)
-    })
-
-    this.#readLine.on('close', () => {
-      if (this.#resolveNext) {
-        this.#resolveNext(null)
-      }
-    })
+    this.#readLine.on('close', () => this.#onClose())
   }
 
 
@@ -251,6 +240,23 @@ class LineReader {
    */
   clearQueue () {
     this.#queue = []
+  }
+
+  #onLine (line) {
+    if (this.#resolveNext) {
+      this.#resolveNext(line)
+      this.#resolveNext = null
+    } else {
+      this.#queue.push(line)
+    }
+
+    console.log(this.#queue)
+  }
+
+  #onClose () {
+    if (this.#resolveNext) {
+      this.#resolveNext(null)
+    }
   }
 }
 
