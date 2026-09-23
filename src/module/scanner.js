@@ -68,6 +68,7 @@ class Scanner {
    * 
    * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
    * @throws {Error} If next token is not a valid number or is not in valid range.
+   * @returns {number} The next number.
    */
   async nextNumber (range = {}) {
     const { min, max } = range
@@ -77,10 +78,10 @@ class Scanner {
     const number = this.#parseNumberStrict(token)
 
     if (!this.#numberIsInRange(number, range)) {
-      throw new Error(`Number ${number} must be in range ${{ min, max }}`)
+      throw new Error(`Number ${number} must be in range: min:${min} max:${max}`)
     }
 
-    throw new Error('Not implemented')
+    return number
   }
 
   /**
