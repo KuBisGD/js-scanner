@@ -28,7 +28,7 @@ class Scanner {
   /**
    * @type {string[]}
    */
-  #buffer
+  #buffer = []
 
   /**
    * Creates a new scanner.
