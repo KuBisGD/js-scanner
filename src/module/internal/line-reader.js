@@ -71,6 +71,11 @@ class LineReader {
     this.#queue = []
   }
 
+  /**
+   * Called on new line.
+   * 
+   * @param {string} line Line from input.
+   */
   #onLine (line) {
     if (this.#resolveNext) {
       this.#resolveNext(line)
@@ -82,6 +87,9 @@ class LineReader {
     console.log(this.#queue)
   }
 
+  /**
+   * Called when line reader closes.
+   */
   #onClose () {
     if (this.#resolveNext) {
       this.#resolveNext(null)
