@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test.js"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
