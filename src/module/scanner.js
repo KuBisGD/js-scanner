@@ -76,7 +76,7 @@ class Scanner {
     const number = this.#parseNumberStrict(token)
 
     if (!this.#numberIsInRange(number, range)) {
-      throw new Error(`Number ${number} must be in range: min:${min} max:${max}`)
+      throw new Error(`Number ${number} must be in range: min:${range.min} max:${range.max}`)
     }
 
     return number
