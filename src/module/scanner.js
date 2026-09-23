@@ -76,10 +76,8 @@ class Scanner {
 
     const number = this.#parseNumberStrict(token)
 
-    if (typeof min === 'number' && typeof max === 'number') {
-      if (min >= max) {
-        throw new Error(`min:${min} cannot be more than or equal to max:${max}`)
-      }
+    if (!this.#numberIsInRange(number, range)) {
+      throw new Error(`Number ${number} must be in range ${{ min, max }}`)
     }
 
     throw new Error('Not implemented')
@@ -167,6 +165,27 @@ class Scanner {
     }
 
     return number
+  }
+
+  /**
+   * Checks if a value is in a given range.
+   * 
+   * @param {number} number Number to be validated.
+   * @param {import('./types/number-range.js').NumberRange} range Range to be validated against.
+   * @returns {boolean} If number is in range.
+   */
+  #numberIsInRange (number, range = {}) {
+    const { min, max } = range
+
+    if (typeof min === 'number') {
+      if (min > number) return false
+    }
+
+    if (typeof max === 'number') {
+      if (max < number) return false
+    }
+
+    return true
   }
 
   /**
