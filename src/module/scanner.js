@@ -71,8 +71,6 @@ class Scanner {
    * @returns {number} The next number.
    */
   async nextNumber (range = {}) {
-    const { min, max } = range
-
     const token = await this.next()
 
     const number = this.#parseNumberStrict(token)
