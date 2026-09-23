@@ -85,17 +85,30 @@ class Scanner {
   /**
    * Gets the next String.
    * 
-   * @param {RegExp|undefined} [pattern=undefined] Pattern for matching the next string.
+   * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
    * @returns {Promise<string>} The next string.
    */
-  async nextString (pattern = undefined) {
-    throw new Error('Not implemented')
+  async nextString (match = {}) {
+    const { pattern } = match
+    const token = await this.next()
+
+    if (pattern instanceof RegExp) {
+      if (!pattern.test(token)) {
+        throw new Error(`'${token}' does not match ${pattern}`)
+      }
+    }
+
+    if (!this.#numberIsInRange(token.length, match)) {
+      throw new Error(`Length of '${token}' must be in range: min:${match.min} max:${match.max}`)
+    }
+
+    return token
   }
 
   /**
    * Return the next token from the buffer.
    * 
-   * @returns {Promise<string | undefined>} The next token from the buffer.
+   * @returns {Promise<string>} The next token from the buffer.
    */
   async next () {
     if (this.#buffer.length === 0) {
