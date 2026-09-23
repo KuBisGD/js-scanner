@@ -6,8 +6,6 @@
  */
 
 import LineReader from './internal/line-reader.js'
-import NumberRange from './types/number-range.js'
-import StringMatch from './types/string-match.js'
 
 /**
  * An input scanner.
@@ -66,9 +64,34 @@ class Scanner {
   }
 
   /**
+   * Gets the next tokens.
+   * 
+   * @returns {string[]} The next tokens in the buffer.
+   */
+  async nextTokens () {
+    if (this.#buffer.length === 0) {
+      const ok = await this.#fillBuffer()
+      if (!ok) {
+        throw new Error('No more inputs')
+      }
+    }
+
+    const buffer = this.#buffer
+    this.#buffer = []
+    return buffer
+  }
+
+  /**
+   * Waits for any next input.
+   */
+  async pauseUntilNext () {
+    await this.#lineReader.readLine()
+  }
+
+  /**
    * Reads the next number.
    * 
-   * @param {NumberRange} [range=object] Filter input for range.
+   * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
    * @throws {Error} If next token is not a valid number or is not in valid range.
    * @returns {number} The next number.
    */
@@ -87,7 +110,7 @@ class Scanner {
   /**
    * Gets the next String.
    * 
-   * @param {StringMatch} [match=object] Pattern for matching the next string.
+   * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
    * @returns {Promise<string>} The next string.
    */
   async nextString (match = {}) {
@@ -185,7 +208,7 @@ class Scanner {
    * Checks if a value is in a given range.
    * 
    * @param {number} number Number to be validated.
-   * @param {NumberRange} range Range to be validated against.
+   * @param {import('./types/number-range.js').NumberRange} range Range to be validated against.
    * @returns {boolean} If number is in range.
    */
   #numberIsInRange (number, range = {}) {
