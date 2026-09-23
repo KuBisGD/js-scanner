@@ -66,20 +66,15 @@ class Scanner {
   /**
    * Reads the next number.
    * 
-   * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range. 
+   * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
+   * @throws {Error} If next token is not a valid number or is not in valid range.
    */
   async nextNumber (range = {}) {
     const { min, max } = range
 
-    const input = await this.next()
+    const token = await this.next()
 
-    const asNumber = Number.parseFloat(input)
-
-    if (Number.isNaN(asNumber)) {
-      throw new Error(`'${input}' could not be converted to number`)
-    }
-
-    
+    const number = this.#parseNumberStrict(token)
 
     if (typeof min === 'number' && typeof max === 'number') {
       if (min >= max) {
@@ -145,6 +140,33 @@ class Scanner {
     this.#buffer = []
     this.#lineReader.clearQueue()
     return this
+  }
+
+  /**
+   * Strictly parses a string to a number.
+   * 
+   * @param {string} token String to be validates as number
+   * @returns {number} The parsed value.
+   * @throws {Error} If token cannot be parsed as a valid number.
+   */
+  #parseNumberStrict (token) {
+    const [mantissa, exponent, ...extra] = token.toLowerCase().split('e')
+    const validMantissa = /^[-+]?\d+$/.test(mantissa) ||
+      /^[-+]?\d+\.\d*$/.test(mantissa) ||
+      /^[-+]?\.\d+$/.test(mantissa)
+    const validExponent = exponent === undefined || /^[-+]?\d+$/.test(exponent)
+
+    if (extra.length > 0 || !validMantissa || !validExponent) {
+      throw new Error(`Expected number got '${token}'`)
+    }
+
+    const number = Number.parseFloat(token)
+
+    if (Number.isNaN(number)) {
+      throw new Error(`'${token}' could not be converted to number`)
+    }
+
+    return number
   }
 
   /**
