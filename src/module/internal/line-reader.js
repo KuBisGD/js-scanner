@@ -83,8 +83,6 @@ class LineReader {
     } else {
       this.#queue.push(line)
     }
-
-    console.log(this.#queue)
   }
 
   /**
