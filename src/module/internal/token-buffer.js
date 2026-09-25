@@ -27,7 +27,7 @@ class TokenBuffer {
   /**
    * @type {string[]}
    */
-  #currentBufferName
+  #currentBufferName = TokenBuffer.DEFAULT_BUFFER_NAME
 
   /**
    * @type {string[][]}
@@ -57,7 +57,6 @@ class TokenBuffer {
    */
   constructor () {
     this.#internalBuffers[TokenBuffer.DEFAULT_BUFFER_NAME] = []
-    this.#currentBufferName = TokenBuffer.DEFAULT_BUFFER_NAME
   }
 
   /**
