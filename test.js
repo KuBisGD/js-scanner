@@ -6,27 +6,20 @@ import Scanner from './src/module/scanner.js'
 const main = async () => {
   const scanner = new Scanner()
 
-  console.log('testing\n')
-  
-  let line = await scanner.prompt('Enter a name: ').nextString({ pattern: /([A-Z])\w+/, min: 5 })
+  const name = await scanner.nextString({ min: 1 })
 
-  console.log(line)
+  console.log('hello', name)
+
+  scanner.pushBuffer()
+  console.log(scanner.hasNext())
+  scanner.clearInput()
+  console.log(scanner.hasNext())
+  scanner.popBuffer()
+  console.log(scanner.hasNext())
 
   console.log(await scanner.next())
 
-
-
-  setTimeout(async () => {
-    console.log('testing - 2\n')
-
-    line = await scanner.clearInput().nextLine()
-
-    console.log(line)
-
-    scanner.clearInput().pauseUntilNext()
-  }, 3000)
-
-  console.log('k')
+  scanner.popBuffer()
 }
 
 main()
