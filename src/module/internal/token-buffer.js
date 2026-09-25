@@ -9,7 +9,15 @@
  * Class for multiple string arrays of tokens.
  */
 class TokenBuffer {
-  static DEFAULT_BUFFER_NAME = 'default'
+  /**
+   * Default buffer name.
+   * 
+   * @returns {string} Buffer name.
+   * @readonly
+   */
+  static get DEFAULT_BUFFER_NAME () {
+    return 'default'
+  }
 
   /**
    * @type {{[key: string]: string[]}}
@@ -48,8 +56,8 @@ class TokenBuffer {
    * Creates a new token buffer.
    */
   constructor () {
-    this.#internalBuffers[TokenBuffer.#DEFAULT_BUFFER_NAME] = []
-    this.#currentBufferName = TokenBuffer.#DEFAULT_BUFFER_NAME
+    this.#internalBuffers[TokenBuffer.DEFAULT_BUFFER_NAME] = []
+    this.#currentBufferName = TokenBuffer.DEFAULT_BUFFER_NAME
   }
 
   /**
@@ -99,14 +107,14 @@ class TokenBuffer {
    * @throws {Error} If name is the default buffer.
    */
   delete (name) {
-    if (name === TokenBuffer.#DEFAULT_BUFFER_NAME) {
+    if (name === TokenBuffer.DEFAULT_BUFFER_NAME) {
       throw new Error('Cannot remove the default buffer')
     }
 
     delete this.#internalBuffers[name]
 
     if (name === this.#currentBufferName) {
-      this.setActive(TokenBuffer.#DEFAULT_BUFFER_NAME)
+      this.setActive(TokenBuffer.DEFAULT_BUFFER_NAME)
     }
   }
 
