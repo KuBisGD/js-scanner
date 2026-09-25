@@ -6,26 +6,26 @@
  */
 
 /**
- * Error for no more inputs.
+ * Error for reaching the end of the input.
  */
 export class EndOfFileError extends Error {
   /**
-   * Creates a new eof error.
+   * Creates a new EOF error.
    * 
    * @param {string} message Message to be displayed with the error.
    */
   constructor (message) {
     super(message)
-    this.name = 'EndOfInputError'
+    this.name = 'EndOfFileError'
   }
 }
 
 /**
- * Error for not matching a regular expression.
+ * Error for a string not matching a regular expression.
  */
 export class RegExpDoesNotMatchError extends Error {
   /**
-   * Creates a new eof error.
+   * Creates a new regular-expression-mismatch error.
    * 
    * @param {string} message Message to be displayed with the error.
    */

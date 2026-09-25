@@ -10,8 +10,6 @@ import LineReader from './internal/line-reader.js'
 
 /**
  * An input scanner.
- * 
- * @todo Document where errors are thrown. (look at eof)
  */
 class Scanner {
 
@@ -49,6 +47,7 @@ class Scanner {
   /**
    * Reads the next line.
    * 
+   * @throws {EndOfFileError} If there is no more data to read.
    * @returns {string} The next line.
    */
   async nextLine () {
@@ -67,6 +66,7 @@ class Scanner {
   /**
    * Gets the next tokens.
    * 
+   * @throws {EndOfFileError} If there is no more data to read.
    * @returns {string[]} The next tokens in the buffer.
    */
   async nextTokens () {
@@ -95,6 +95,7 @@ class Scanner {
    * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
    * @throws {TypeError} If next token is not a valid number.
    * @throws {RangeError} If number is not within given range.
+   * @throws {EndOfFileError} If there is no more data to read.
    * @returns {number} The next number.
    */
   async nextNumber (range = {}) {
@@ -110,11 +111,12 @@ class Scanner {
   }
 
   /**
-   * Gets the next String.
+   * Gets the next string.
    * 
    * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
    * @throws {RangeError} If input is not within given range.
    * @throws {RegExpDoesNotMatchError} If input does not match given pattern.
+   * @throws {EndOfFileError} If there is no more data to read.
    * @returns {Promise<string>} The next string.
    */
   async nextString (match = {}) {
@@ -137,6 +139,7 @@ class Scanner {
   /**
    * Return the next token from the buffer.
    * 
+   * @throws {EndOfFileError} If there is no more data to read.
    * @returns {Promise<string>} The next token from the buffer.
    */
   async next () {
