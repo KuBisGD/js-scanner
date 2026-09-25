@@ -9,7 +9,7 @@ import { EndOfFileError, RegExpDoesNotMatchError } from './internal/errors/scann
 import LineReader from './internal/line-reader.js'
 
 /**
- * An input scanner.
+ * Class for scanning an input stream.
  */
 class Scanner {
 
@@ -22,7 +22,6 @@ class Scanner {
    * @type {Node.WritableStream}
    */
   #output
-
 
   /**
    * @type {string[]}
