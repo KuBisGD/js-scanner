@@ -5,6 +5,7 @@
  * @version 1.0.0
  */
 
+import { EndOfFileError, RegExpDoesNotMatchError } from './internal/errors/scanner-errors.js'
 import LineReader from './internal/line-reader.js'
 
 /**
@@ -57,7 +58,7 @@ class Scanner {
 
     if (line === null) {
       this.eof = true
-      throw new Error('No more input')
+      throw new EndOfFileError('No more input')
     }
 
     return line
@@ -72,7 +73,7 @@ class Scanner {
     if (this.#buffer.length === 0) {
       const ok = await this.#fillBuffer()
       if (!ok) {
-        throw new Error('No more inputs')
+        throw new EndOfFileError('No more inputs')
       }
     }
 
@@ -92,7 +93,8 @@ class Scanner {
    * Reads the next number.
    * 
    * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
-   * @throws {Error} If next token is not a valid number or is not in valid range.
+   * @throws {TypeError} If next token is not a valid number.
+   * @throws {RangeError} If number is not within given range.
    * @returns {number} The next number.
    */
   async nextNumber (range = {}) {
@@ -101,7 +103,7 @@ class Scanner {
     const number = this.#parseNumberStrict(token)
 
     if (!this.#numberIsInRange(number, range)) {
-      throw new Error(`Number ${number} must be in range: min:${range.min} max:${range.max}`)
+      throw new RangeError(`Number ${number} must be in range: min:${range.min} max:${range.max}`)
     }
 
     return number
@@ -111,6 +113,8 @@ class Scanner {
    * Gets the next String.
    * 
    * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
+   * @throws {RangeError} If input is not within given range.
+   * @throws {RegExpDoesNotMatchError} If input does not match given pattern.
    * @returns {Promise<string>} The next string.
    */
   async nextString (match = {}) {
@@ -119,12 +123,12 @@ class Scanner {
 
     if (pattern instanceof RegExp) {
       if (!pattern.test(token)) {
-        throw new Error(`'${token}' does not match ${pattern}`)
+        throw new RegExpDoesNotMatchError(`'${token}' does not match ${pattern}`)
       }
     }
 
     if (!this.#numberIsInRange(token.length, match)) {
-      throw new Error(`Length of '${token}' must be in range: min:${match.min} max:${match.max}`)
+      throw new RangeError(`Length of '${token}' must be in range: min:${match.min} max:${match.max}`)
     }
 
     return token
@@ -139,7 +143,7 @@ class Scanner {
     if (this.#buffer.length === 0) {
       const ok = await this.#fillBuffer()
       if (!ok) {
-        throw Error('No more input')
+        throw new EndOfFileError('No more input')
       }
     }
 
@@ -156,7 +160,7 @@ class Scanner {
   }
 
   /**
-   * Prompt a message to the output.
+   * Writes a message to the output.
    * 
    * @param {string} message A message to prompt the output.
    * @returns {Scanner} Reference to this Scanner.
@@ -182,7 +186,7 @@ class Scanner {
    * 
    * @param {string} token String to be validates as number
    * @returns {number} The parsed value.
-   * @throws {Error} If token cannot be parsed as a valid number.
+   * @throws {TypeError} If token cannot be parsed as a valid number.
    */
   #parseNumberStrict (token) {
     const [mantissa, exponent, ...extra] = token.toLowerCase().split('e')
@@ -192,13 +196,13 @@ class Scanner {
     const validExponent = exponent === undefined || /^[-+]?\d+$/.test(exponent)
 
     if (extra.length > 0 || !validMantissa || !validExponent) {
-      throw new Error(`Expected number got '${token}'`)
+      throw new TypeError(`Expected number got '${token}'`)
     }
 
     const number = Number.parseFloat(token)
 
     if (Number.isNaN(number)) {
-      throw new Error(`'${token}' could not be converted to number`)
+      throw new TypeError(`'${token}' could not be converted to number`)
     }
 
     return number
