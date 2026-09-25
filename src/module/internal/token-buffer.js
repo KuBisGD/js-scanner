@@ -5,18 +5,26 @@
  * @version 1.0.0
  */
 
+/**
+ * Class for multiple string arrays of tokens.
+ */
 class TokenBuffer {
+  static #DEFAULT_BUFFER_NAME = 'default'
+
   /**
-   * 
+   * @type {{[key: string]: string[]}}
    */
-  #internalBuffer
+  #internalBuffers = {}
 
   /**
    * @type {string[]}
    */
-  #currentBuffer
+  #currentBufferName
 
-  #lastBuffer
+  /**
+   * @type {string[][]}
+   */
+  #bufferStack = []
 
   /**
    * Gets a copy of the current buffer
@@ -24,7 +32,7 @@ class TokenBuffer {
    * @returns {string[]} The buffer
    */
   get current () {
-    return this.#currentBuffer.slice()
+    return [...this.#getCurrent()]
   }
 
   /**
@@ -33,56 +41,109 @@ class TokenBuffer {
    * @returns {number} The buffer length.
    */
   get length () {
-    return this.#currentBuffer.length
+    return this.#getCurrent().length
   }
 
+  /**
+   * Creates a new token buffer.
+   */
   constructor () {
-    this.#internalBuffer = { default: [] }
-    this.#currentBuffer = this.#internalBuffer.default
-    this.#lastBuffer = this.#internalBuffer.default
+    this.#internalBuffers[TokenBuffer.#DEFAULT_BUFFER_NAME] = []
+    this.#currentBufferName = TokenBuffer.#DEFAULT_BUFFER_NAME
   }
 
   /**
    * Adds new tokens to the current buffer
    * 
-   * @param  {...string} tokens 
+   * @param  {...string} tokens Tokens to push 
    */
   push (...tokens) {
-    this.#currentBuffer.push(...tokens)
-  }
-
-  shift () {
-    return this.#currentBuffer.shift()
-  }
-
-  setActive (name) {
-    if (typeof this.#internalBuffer[name] === 'undefined') {
-      this.#internalBuffer[name] = []
-    }
-
-    this.#lastBuffer = this.#currentBuffer
-    this.#currentBuffer = this.#internalBuffer[name]
-    return this
-  }
-
-  saveCurrentTo (name) {
-    this.#internalBuffer[name] = [...this.#currentBuffer]
+    this.#getCurrent().push(...tokens)
   }
 
   /**
-   * Deletes a buffer from the stack.
+   * Shifts a token from the current buffer.
+   * 
+   * @returns {string[]} The token.
+   */
+  shift () {
+    return this.#getCurrent().shift()
+  }
+
+  /**
+   * Sets a new buffer as active, creates it if it does not exits.
+   * 
+   * @param {string} name The name of the buffer to set as active.
+   */
+  setActive (name) {
+    if (typeof this.#internalBuffers[name] === 'undefined') {
+      this.#internalBuffers[name] = []
+    }
+
+    this.#currentBufferName = name
+  }
+
+  /**
+   * Saves the current buffer under a new name.
+   * 
+   * @param {string} name Name to save to.
+   */
+  saveCurrentTo (name) {
+    this.#internalBuffers[name] = [...this.#getCurrent()]
+  }
+
+  /**
+   * Deletes a buffer from the stack. (switches to default buffer if current is removed)
    * 
    * @param {string} name Buffer name to be deleted
    */
   delete (name) {
-    delete this.#internalBuffer[name]
+    if (name === TokenBuffer.#DEFAULT_BUFFER_NAME) {
+      throw new Error('Cannot remove the default buffer')
+    }
+
+    delete this.#internalBuffers[name]
+
+    if (name === this.#currentBufferName) {
+      this.setActive(TokenBuffer.#DEFAULT_BUFFER_NAME)
+    }
   }
 
   /**
    * Clears this current buffer
    */
   clear () {
-    this.#currentBuffer = []
+    this.#internalBuffers[this.#currentBufferName] = []
+  }
+
+  /**
+   * Pushes the current buffer and creates a snapshot of it.
+   */
+  pushBuffer () {
+    const snapshot = [...this.#getCurrent()]
+    this.#bufferStack.push(snapshot)
+  }
+
+  /**
+   * Restores the last pushed buffer to the current buffer
+   * 
+   * @throws {Error} If there are no buffers to pop.
+   */
+  popBuffer () {
+    if (this.#bufferStack.length === 0) {
+      throw new Error('No buffers to pop')
+    }
+
+    this.#internalBuffers[this.#currentBufferName] = this.#bufferStack.pop()
+  }
+
+  /**
+   * Helper method to get the current buffer.
+   * 
+   * @returns {string[]} Reference to the current buffer.
+   */
+  #getCurrent() {
+    return this.#internalBuffers[this.#currentBufferName]
   }
 }
 
