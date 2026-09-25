@@ -7,6 +7,7 @@
 
 import { EndOfFileError, RegExpDoesNotMatchError } from './internal/errors/scanner-errors.js'
 import LineReader from './internal/line-reader.js'
+import TokenBuffer from './internal/token-buffer.js'
 
 /**
  * Class for scanning an input stream.
@@ -24,9 +25,9 @@ class Scanner {
   #output
 
   /**
-   * @type {string[]}
+   * @type {TokenBuffer}
    */
-  #buffer = []
+  #buffer
 
   /**
    * Creates a new scanner.
@@ -41,6 +42,8 @@ class Scanner {
 
     this.#lineReader = new LineReader(input)
     this.#output = output
+
+    this.#buffer = new TokenBuffer()
   }
 
   /**
@@ -50,7 +53,7 @@ class Scanner {
    * @returns {string} The next line.
    */
   async nextLine () {
-    this.#buffer = []
+    this.#buffer.clear()
 
     const line = await this.#lineReader.readLine()
 
@@ -76,8 +79,8 @@ class Scanner {
       }
     }
 
-    const buffer = this.#buffer
-    this.#buffer = []
+    const buffer = this.#buffer.current
+    this.#buffer.clear()
     return buffer
   }
 
@@ -178,7 +181,7 @@ class Scanner {
    * @returns {Scanner} Reference to this Scanner.
    */
   clearInput () {
-    this.#buffer = []
+    this.#buffer.clear()
     this.#lineReader.clearQueue()
     return this
   }
