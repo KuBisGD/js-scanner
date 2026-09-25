@@ -9,7 +9,7 @@
  * Class for multiple string arrays of tokens.
  */
 class TokenBuffer {
-  static #DEFAULT_BUFFER_NAME = 'default'
+  static DEFAULT_BUFFER_NAME = 'default'
 
   /**
    * @type {{[key: string]: string[]}}
@@ -96,6 +96,7 @@ class TokenBuffer {
    * Deletes a buffer from the stack. (switches to default buffer if current is removed)
    * 
    * @param {string} name Buffer name to be deleted
+   * @throws {Error} If name is the default buffer.
    */
   delete (name) {
     if (name === TokenBuffer.#DEFAULT_BUFFER_NAME) {
