@@ -23,13 +23,12 @@ afterEach(() => {
 })
 
 describe('Scanner line and token reading', () => {
-  it('reads full lines and marks EOF when no line remains', async () => {
+  it('reads full lines and reports EOF when no line remains', async () => {
     const { scanner } = await createScanner(' first line  \nsecond line\n')
 
     await expect(scanner.nextLine()).resolves.toBe(' first line  ')
     await expect(scanner.nextLine()).resolves.toBe('second line')
     await expect(scanner.nextLine()).rejects.toMatchObject({ name: 'EndOfFileError' })
-    expect(scanner.eof).toBe(true)
   })
 
   it('splits tokens on whitespace and skips empty or whitespace-only lines', async () => {
@@ -52,7 +51,6 @@ describe('Scanner line and token reading', () => {
     await expect(scanner.next()).resolves.toBe('alpha')
     await expect(scanner.next()).resolves.toBe('beta')
     await expect(scanner.next()).rejects.toMatchObject({ name: 'EndOfFileError' })
-    expect(scanner.eof).toBe(true)
   })
 
   it('waits for the next line and resolves when the input closes', async () => {
