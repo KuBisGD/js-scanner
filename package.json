@@ -1,5 +1,5 @@
 {
-  "name": "input-scanner",
+  "name": "@kubis/input-scanner",
   "version": "1.0.0",
   "description": "A Node.js input scanner for reading lines, tokens, numbers, and validated strings.",
   "license": "MIT",

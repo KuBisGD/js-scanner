@@ -1,17 +1,17 @@
-# input-scanner
+# @kubis/input-scanner
 
 A Node.js ES module for reading lines and whitespace-separated tokens from an input stream.
 
 ## Install
 
 ```sh
-npm install input-scanner
+npm install @kubis/input-scanner
 ```
 
 ## Usage
 
 ```js
-import Scanner from 'input-scanner'
+import Scanner from '@kubis/input-scanner'
 
 const scanner = new Scanner()
 scanner.prompt('Enter a number: ')
