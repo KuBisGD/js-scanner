@@ -1,11 +1,20 @@
 {
-  "name": "js-scanner",
+  "name": "input-scanner",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Node.js input scanner for reading lines, tokens, numbers, and validated strings.",
   "license": "MIT",
-  "author": "",
+  "author": "Edwin Johnsson",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KuBisGD/js-scanner.git"
+  },
+  "main": "./src/module/scanner.js",
+  "exports": "./src/module/scanner.js",
+  "files": [
+    "src/module/"
+  ],
   "type": "module",
-  "main": "main.js",
+  "module": "./src/module/scanner.js",
   "scripts": {
     "lint": "npx eslint ./src || exit 0",
     "lint:fix": "npx eslint ./src --fix || exit 0",
