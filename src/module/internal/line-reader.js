@@ -27,6 +27,11 @@ class LineReader {
   #queue = []
 
   /**
+   * @type {boolean}
+   */
+  #closed = false
+
+  /**
    * Gets the length of the LineReaders internal queue.
    * 
    * @returns {number} The length.
@@ -59,6 +64,10 @@ class LineReader {
       return this.#queue.shift()
     }
 
+    if (this.#closed) {
+      return null
+    }
+
     return new Promise(resolve => {
       this.#resolveNext = resolve
     })
@@ -89,8 +98,11 @@ class LineReader {
    * Called when line reader closes.
    */
   #onClose () {
+    this.#closed = true
+
     if (this.#resolveNext) {
       this.#resolveNext(null)
+      this.#resolveNext = null
     }
   }
 }
