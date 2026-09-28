@@ -58,7 +58,6 @@ class Scanner {
     const line = await this.#lineReader.readLine()
 
     if (line === null) {
-      this.eof = true
       throw new EndOfFileError('No more input')
     }
 
@@ -305,7 +304,6 @@ class Scanner {
       const line = await this.#lineReader.readLine()
 
       if (line === null) {
-        this.eof = true
         return false
       }
 
