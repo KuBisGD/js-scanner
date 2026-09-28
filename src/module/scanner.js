@@ -301,18 +301,21 @@ class Scanner {
    * @returns {Promise<boolean>} True on success.
    */
   async #fillBuffer () {
-    const line = await this.#lineReader.readLine()
+    while (true) {
+      const line = await this.#lineReader.readLine()
 
-    if (line === null) {
-      this.eof = true
-      return false
+      if (line === null) {
+        this.eof = true
+        return false
+      }
+
+      const tokens = this.#tokenize(line)
+
+      if (tokens.length > 0) {
+        this.#buffer.push(...tokens)
+        return true
+      }
     }
-
-    const tokens = this.#tokenize(line)
-
-    this.#buffer.push(...tokens)
-
-    return tokens.length > 0
   }
 }
 
