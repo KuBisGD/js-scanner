@@ -31,7 +31,7 @@ The main reasoning for using multiple testing methods while developing the modul
 While the unit tests provide a cohesive, covering, and deterministic test it also takes more effort to implement. While the module is being developed and its full implementation is not fully realized it is much simpler to use a smaller test file that only test what is currently being worked on. The downside of this testing approach it that new implementations could break older code that is no longer tested for.
 
 ## Test Results
-
+<!--
 **Example** (shows what a filled-in row can look like — remove this example table before
 submitting):
 
@@ -41,7 +41,7 @@ submitting):
 | `Picture.getPixelAt(x, y)` with coordinates outside the image.         | Manual test via the Test-App's interface: entered a coordinate pair larger than the image's width/height and observed the output. | ❌ Didn't throw an error initially — fixed, now throws a clear exception. |
 
 **Your test results:**
-
+-->
 | What was tested | How it was tested | Result |
 | ---------------- | ------------------ | ------- |
 | `Scanner.nextLine()` reads full lines and reports EOF when no line remains | Automated test (Vitest): Checks that two lines are read and an `EndOfFileError` is thrown on EOF. | ✅ Passed. |
