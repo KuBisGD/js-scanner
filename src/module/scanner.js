@@ -50,7 +50,7 @@ class Scanner {
    * Reads the next line.
    * 
    * @throws {EndOfFileError} If there is no more data to read.
-   * @returns {string} The next line.
+   * @returns {Promise<string>} The next line.
    */
   async nextLine () {
     this.#buffer.clear()
@@ -68,7 +68,7 @@ class Scanner {
    * Gets the next tokens.
    * 
    * @throws {EndOfFileError} If there is no more data to read.
-   * @returns {string[]} The next tokens in the buffer.
+   * @returns {Promise<string[]>} The next tokens in the buffer.
    */
   async nextTokens () {
     if (this.#buffer.length === 0) {
