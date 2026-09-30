@@ -81,6 +81,10 @@ varför?*
 
 Svar:
 
+Writing code that should be used by others compared the something that is not is usually not that big of a difference for me. Unless im writing a one of thing that i will use once i like to keep my code looking relatively clean and concise, but knowing that the code **is** going to be used does make me put some extra effort into the public Api.
+
+My initial *"Unique Selling Proposition"* could be summeriest as *“A simple, Java-like Scanner for Node.js that makes console input predictable and type-safe.”* but later moved on to *“A fully asynchronous, promise-based input reader with pluggable parsers.”*. Later some basic buffer handling was added to this concept to further increase the complexity of the task since it was a bit basic before this.
+
 ## 5. AI-samarbete
 
 *Beskriv kort vilka delar av inlämningen du tagit fram tillsammans med AI-assistenter (t.ex.
@@ -98,4 +102,4 @@ valde du bort AI i delar där du använde det förra gången?*
 
 Svar:
 
-Since the scope of the previous laboration was very small AI was only used to create some greeting messages in an array and this was only done to save some time. In this laboration however quality was a bigger concern using AI to proofread documentations and code is a nice helping hand.
+Since the scope of the previous laboration was very small AI was only used to create some greeting messages in an array and this was only done to save some time. In this laboration however quality was a bigger concern and using AI to proofread documentations and code is a nice helping hand.
