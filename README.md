@@ -8,6 +8,11 @@ A Node.js ES module for reading lines and whitespace-separated tokens from an in
 npm install @kubis/input-scanner
 ```
 
+## Requirements
+
+- Node.js 20 or newer
+- ESM support (`"type": "module"` in `package.json`)
+
 ## Usage
 
 ```js
