@@ -97,7 +97,7 @@ class Scanner {
    * @throws {TypeError} If next token is not a valid number.
    * @throws {RangeError} If number is not within given range.
    * @throws {EndOfFileError} If there is no more data to read.
-   * @returns {number} The next number.
+   * @returns {Promise<number>} The next number.
    */
   async nextNumber (range = {}) {
     const token = await this.next()
