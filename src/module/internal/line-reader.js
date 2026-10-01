@@ -74,6 +74,15 @@ class LineReader {
   }
 
   /**
+   * Gets a copy of the input queue.
+   * 
+   * @returns {string[]} The queue.
+   */
+  previewQueue () {
+    return [...this.#queue]
+  }
+
+  /**
    * Clears the internal input queue.
    */
   clearQueue () {
