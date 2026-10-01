@@ -155,12 +155,20 @@ class Scanner {
   }
 
   /**
-   *  Checks if the buffer has more tokens.
+   * Checks if the buffer has more tokens.
    * 
    * @returns {boolean} Whether the buffer has more items
    */
   hasNext () {
-    return this.#buffer.length > 0 || this.#lineReader.length > 0
+    if (this.#buffer.length > 0) return true
+
+    if (this.#lineReader.length > 0) {
+      for (const line of this.#lineReader.previewQueue()) {
+        if (this.#tokenize(line).length > 0) return true
+      }
+    }
+
+    return false
   }
 
   /**
