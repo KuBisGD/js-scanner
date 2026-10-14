@@ -36,6 +36,7 @@ Creates a scanner. Both streams default to `process.stdin` and `process.stdout`.
 ### `nextLine(): Promise<string>`
 
 Reads the next complete line. Throws `EndOfFileError` when the input stream has ended.
+*Line reads does not affect token buffering*
 
 ### `next(): Promise<string>`
 
