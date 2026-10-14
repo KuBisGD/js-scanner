@@ -72,10 +72,7 @@ class Scanner {
    */
   async nextTokens () {
     if (this.#buffer.length === 0) {
-      const ok = await this.#fillBuffer()
-      if (!ok) {
-        throw new EndOfFileError('No more inputs')
-      }
+      await this.#fillBuffer()
     }
 
     const buffer = this.#buffer.current
@@ -145,10 +142,7 @@ class Scanner {
    */
   async next () {
     if (this.#buffer.length === 0) {
-      const ok = await this.#fillBuffer()
-      if (!ok) {
-        throw new EndOfFileError('No more input')
-      }
+      await this.#fillBuffer()
     }
 
     return this.#buffer.shift()
@@ -305,21 +299,21 @@ class Scanner {
   /**
    * Fills the buffer with tokens
    * 
-   * @returns {Promise<boolean>} True on success.
+   * @returns {Promise<void>} True on success.
    */
   async #fillBuffer () {
     while (true) {
       const line = await this.#lineReader.readLine()
 
       if (line === null) {
-        return false
+        throw new EndOfFileError('No more inputs')
       }
 
       const tokens = this.#tokenize(line)
 
       if (tokens.length > 0) {
         this.#buffer.push(...tokens)
-        return true
+        return
       }
     }
   }
