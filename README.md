@@ -36,7 +36,8 @@ Creates a scanner. Both streams default to `process.stdin` and `process.stdout`.
 ### `nextLine(): Promise<string>`
 
 Reads the next complete line. Throws `EndOfFileError` when the input stream has ended.
-*Line reads does not affect token buffering*
+
+Reading a line does not affect the token buffer.
 
 ### `next(): Promise<string>`
 
@@ -48,19 +49,20 @@ Reads the remaining tokens in the next non-empty input line. Throws `EndOfFileEr
 
 ### `nextNumber(range?: { min?: number, max?: number }): Promise<number>`
 
-Reads a number, optionally bounded by `min` and `max`.
+Reads a number, optionally bounded by `min` and `max`. Either bound may be omitted.
 
 - Throws `EndOfFileError` when input ends.
-- Throws `TypeError` when the token is not a valid number.
-- Throws `RangeError` when the number is outside the specified bounds.
+- Throws `TypeError` when the token is not a valid number or a provided bound is not a number.
+- Throws `RangeError` when the number is outside the specified bounds or a provided bound is not finite.
 
 ### `nextString(match?: { min?: number, max?: number, pattern?: RegExp }): Promise<string>`
 
-Reads a string, optionally checking its length and pattern.
+Reads a string, optionally checking its length and pattern. Either length bound may be omitted.
 
 - Throws `EndOfFileError` when input ends.
 - Throws `RegExpDoesNotMatchError` when the string does not match `pattern`.
-- Throws `RangeError` when its length is outside the specified bounds.
+- Throws `TypeError` when `pattern` is provided but is not a `RegExp`, or a provided length bound is not a number.
+- Throws `RangeError` when its length is outside the specified bounds or a provided length bound is not finite.
 
 ### `pauseUntilNext(): Promise<void>`
 
