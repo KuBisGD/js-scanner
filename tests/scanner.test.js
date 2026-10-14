@@ -31,6 +31,14 @@ describe('Scanner line and token reading', () => {
     await expect(scanner.nextLine()).rejects.toMatchObject({ name: 'EndOfFileError' })
   })
 
+  it('does not clear buffered tokens when reading a line', async () => {
+    const { scanner } = await createScanner('one two\nnext line\n')
+
+    await expect(scanner.next()).resolves.toBe('one')
+    await expect(scanner.nextLine()).resolves.toBe('next line')
+    await expect(scanner.next()).resolves.toBe('two')
+  })
+
   it('splits tokens on whitespace and skips empty or whitespace-only lines', async () => {
     const { scanner } = await createScanner('\n  \t \n one\t two   three  \n')
 
@@ -110,12 +118,32 @@ describe('Scanner number and string validation', () => {
     await expect(scanner.nextNumber()).rejects.toThrow("'1' could not be converted to number")
   })
 
-  it('accepts inclusive numeric range boundaries and ignores non-number bounds', async () => {
+  it('accepts inclusive numeric range boundaries and optional bounds', async () => {
     const { scanner } = await createScanner('0 10 5\n')
 
     await expect(scanner.nextNumber({ min: 0, max: 0 })).resolves.toBe(0)
     await expect(scanner.nextNumber({ min: 10, max: 10 })).resolves.toBe(10)
-    await expect(scanner.nextNumber({ min: '4', max: null })).resolves.toBe(5)
+    await expect(scanner.nextNumber({})).resolves.toBe(5)
+  })
+
+  it.each([
+    [{ min: '4' }, 'min'],
+    [{ max: null }, 'max'],
+  ])('rejects non-number range bounds %j', async (range, bound) => {
+    const { scanner } = await createScanner('5\n')
+
+    await expect(scanner.nextNumber(range))
+      .rejects.toThrow(`${bound} must be a number`)
+  })
+
+  it.each([
+    [{ min: Number.NaN }, 'min'],
+    [{ max: Number.POSITIVE_INFINITY }, 'max'],
+  ])('rejects non-finite range bounds %j', async (range, bound) => {
+    const { scanner } = await createScanner('5\n')
+
+    await expect(scanner.nextNumber(range))
+      .rejects.toThrow(new RangeError(`${bound} must be finite`))
   })
 
   it.each([
@@ -143,11 +171,21 @@ describe('Scanner number and string validation', () => {
     })
   })
 
-  it('ignores a non-regex pattern and supports either length bound independently', async () => {
+  it('rejects a non-regex pattern and supports either length bound independently', async () => {
     const { scanner } = await createScanner('a abc\n')
 
-    await expect(scanner.nextString({ pattern: 'not a regex', max: 1 })).resolves.toBe('a')
+    await expect(scanner.nextString({ pattern: 'not a regex', max: 1 }))
+      .rejects.toThrow('Pattern must be of type RegExp or undefined')
     await expect(scanner.nextString({ min: 3 })).resolves.toBe('abc')
+  })
+
+  it('rejects non-number and non-finite string length bounds', async () => {
+    const { scanner } = await createScanner('abc def\n')
+
+    await expect(scanner.nextString({ min: '3' }))
+      .rejects.toThrow('min must be a number')
+    await expect(scanner.nextString({ max: Number.POSITIVE_INFINITY }))
+      .rejects.toThrow(new RangeError('max must be finite'))
   })
 
   it.each([
