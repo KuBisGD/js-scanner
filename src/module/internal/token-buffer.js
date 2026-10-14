@@ -25,7 +25,7 @@ class TokenBuffer {
   #internalBuffers = {}
 
   /**
-   * @type {string[]}
+   * @type {string}
    */
   #currentBufferName = TokenBuffer.DEFAULT_BUFFER_NAME
 
