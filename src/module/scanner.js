@@ -63,7 +63,7 @@ class Scanner {
   }
 
   /**
-   * Gets the next tokens.
+   * Consumes the current token buffer.
    * 
    * @throws {EndOfFileError} If there is no more data to read.
    * @returns {Promise<string[]>} The next tokens in the buffer.
