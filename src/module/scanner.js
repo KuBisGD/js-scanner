@@ -110,7 +110,7 @@ class Scanner {
    * Gets the next string.
    * 
    * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
-   * @throws {RangeError} If input is not within given range.
+   * @throws {RangeError} If the provided string length is outside the allowed range.
    * @throws {RegExpDoesNotMatchError} If input does not match given pattern.
    * @throws {EndOfFileError} If there is no more data to read.
    * @returns {Promise<string>} The next string.
