@@ -125,6 +125,8 @@ class Scanner {
       if (!pattern.test(token)) {
         throw new RegExpDoesNotMatchError(`'${token}' does not match ${pattern}`)
       }
+    } else if (pattern !== undefined) {
+      throw new TypeError('Pattern must be of type RegExp or undefined')
     }
 
     if (!this.#numberIsInRange(token.length, match)) {
