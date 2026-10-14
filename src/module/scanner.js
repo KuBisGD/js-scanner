@@ -47,14 +47,12 @@ class Scanner {
   }
 
   /**
-   * Reads the next line.
+   * Reads the next line without affecting the token buffer.
    * 
    * @throws {EndOfFileError} If there is no more data to read.
    * @returns {Promise<string>} The next line.
    */
   async nextLine () {
-    this.#buffer.clear()
-
     const line = await this.#lineReader.readLine()
 
     if (line === null) {
