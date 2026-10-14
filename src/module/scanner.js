@@ -256,24 +256,43 @@ class Scanner {
   }
 
   /**
-   * Checks if a value is in a given range.
+   * Validates an optional numeric range bound.
    * 
    * @param {number} number Number to be validated.
    * @param {import('./types/number-range.js').NumberRange} range Range to be validated against.
+   * @throws {TypeError} If range values are not numbers.
+   * @throws {RangeError} If range values are not finite. 
    * @returns {boolean} If number is in range.
    */
   #numberIsInRange (number, range = {}) {
     const { min, max } = range
 
-    if (typeof min === 'number') {
-      if (min > number) return false
-    }
+    if (min !== undefined) this.#validateRangeBound(min, 'min')
+    if (max !== undefined) this.#validateRangeBound(max, 'max')
 
-    if (typeof max === 'number') {
-      if (max < number) return false
-    }
+    if (min !== undefined && min > number) return false
+    if (max !== undefined && max < number) return false
 
     return true
+  }
+
+  /**
+   * Validates if a number should be used in a range
+   * 
+   * @param {number | undefined} value Value to be validated.
+   * @param {string} name Name of the value to be validated.
+   * @throws {TypeError} If value is not a number.
+   * @throws {RangeError} If the value is not finite.
+   * @returns {void}
+   */
+  #validateRangeBound (value, name) {
+    if (typeof value !== 'number') {
+      throw new TypeError(`${name} must be a number; got "${typeof value}"`)
+    }
+
+    if (!Number.isFinite(value)) {
+      throw new RangeError(`${name} must be finite`)
+    }
   }
 
   /**
