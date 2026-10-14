@@ -90,8 +90,9 @@ class Scanner {
    * 
    * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
    * @throws {TypeError} If next token is not a valid number.
-   * @throws {RangeError} If number is not within given range.
+   * @throws {RangeError} If number is not within given range, or if range values are not finite.
    * @throws {EndOfFileError} If there is no more data to read.
+   * @throws {TypeError} If range values are not numbers.
    * @returns {Promise<number>} The next number.
    */
   async nextNumber (range = {}) {
@@ -110,9 +111,10 @@ class Scanner {
    * Gets the next string.
    * 
    * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
-   * @throws {RangeError} If the provided string length is outside the allowed range.
+   * @throws {RangeError} If the provided string length is outside the allowed range, or the range values are not finite.
    * @throws {RegExpDoesNotMatchError} If input does not match given pattern.
    * @throws {EndOfFileError} If there is no more data to read.
+   * @throws {TypeError} If range values are not numbers.
    * @returns {Promise<string>} The next string.
    */
   async nextString (match = {}) {
