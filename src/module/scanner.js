@@ -225,6 +225,7 @@ class Scanner {
   
   /**
    * Pushes the current buffer and creates a snapshot of it.
+   * 
    * @returns {Scanner} Reference to this Scanner.
    */
   pushBuffer () {
