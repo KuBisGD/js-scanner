@@ -205,43 +205,53 @@ class Scanner {
    * Sets the current buffer. Creates it if it does not exits.
    * 
    * @param {string} name The name of the buffer.
+   * @returns {Scanner} Reference to this Scanner.
    */
   useBuffer (name) {
     this.#buffer.setActive(name)
+    return this
   }
 
   /**
    * Saves the current buffer to a new one.
    * 
    * @param {string} name Name to save as
+   * @returns {Scanner} Reference to this Scanner.
    */
   saveBuffer (name) {
     this.#buffer.saveCurrentTo(name)
+    return this
   }
   
   /**
    * Pushes the current buffer and creates a snapshot of it.
+   * @returns {Scanner} Reference to this Scanner.
    */
   pushBuffer () {
     this.#buffer.pushBuffer()
+    return this
   }
 
   /**
    * Restores the last pushed buffer to the current buffer.
    * 
    * @throws {Error} If there are no buffers to pop.
+   * @returns {Scanner} Reference to this Scanner.
    */
   popBuffer () {
     this.#buffer.popBuffer()
+    return this
   }
 
   /**
    * Removes a buffer by name, if it is the current the default buffer is set as active.
    * 
    * @param {string} name Name of buffer to remove.
+   * @returns {Scanner} Reference to this Scanner.
    */
   removeBuffer (name) {
     this.#buffer.delete(name)
+    return this
   }
 
   /**
