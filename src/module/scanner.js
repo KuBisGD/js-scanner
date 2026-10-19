@@ -10,6 +10,18 @@ import LineReader from './internal/line-reader.js'
 import TokenBuffer from './internal/token-buffer.js'
 
 /**
+ * @typedef {import('./types/io-settings.js').IOSettings} IOSettings
+ */
+
+/**
+ * @typedef {import('./types/number-range.js').NumberRange} NumberRange
+ */
+
+/**
+ * @typedef {import('./types/string-match.js').StringMatch} StringMatch
+ */
+
+/**
  * Class for scanning an input stream.
  */
 class Scanner {
@@ -32,7 +44,7 @@ class Scanner {
   /**
    * Creates a new scanner.
    * 
-   * @param {import('./types/io-settings.js').IOSettings} [io=object] Scanner settings
+   * @param {IOSettings} [io=object] Scanner settings
    */
   constructor (io = {}) {
     const {
@@ -88,7 +100,7 @@ class Scanner {
   /**
    * Reads the next number.
    * 
-   * @param {import('./types/number-range.js').NumberRange} [range=object] Filter input for range.
+   * @param {NumberRange} [range=object] Filter input for range.
    * @throws {TypeError} If next token is not a valid number.
    * @throws {RangeError} If number is not within given range, or if range values are not finite.
    * @throws {EndOfFileError} If there is no more data to read.
@@ -108,9 +120,9 @@ class Scanner {
   }
 
   /**
-   * Gets the next string.
+   * Gets the next string from the buffer.
    * 
-   * @param {import('./types/string-match.js').StringMatch} [match=object] Pattern for matching the next string.
+   * @param {StringMatch} [match=object] Pattern for matching the next string.
    * @throws {RangeError} If the provided string length is outside the allowed range, or the range values are not finite.
    * @throws {RegExpDoesNotMatchError} If input does not match given pattern.
    * @throws {EndOfFileError} If there is no more data to read.
@@ -263,7 +275,7 @@ class Scanner {
    * Validates an optional numeric range bound.
    * 
    * @param {number} number Number to be validated.
-   * @param {import('./types/number-range.js').NumberRange} range Range to be validated against.
+   * @param {NumberRange} range Range to be validated against.
    * @throws {TypeError} If range values are not numbers.
    * @throws {RangeError} If range values are not finite. 
    * @returns {boolean} If number is in range.
