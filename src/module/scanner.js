@@ -22,7 +22,7 @@ import TokenBuffer from './internal/token-buffer.js'
  */
 
 /**
- * Class for scanning an input stream.
+ * Class for scanning an input stream and prompting an output stream.
  */
 class Scanner {
 
